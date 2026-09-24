@@ -1,5 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
   <rect width="512" height="512" fill="#09090b"/>
-  <path d="M128 160L224 352L256 304L288 352L384 160" stroke="#22d3ee" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M192 224H320" stroke="#22d3ee" stroke-width="32" stroke-linecap="round" opacity="0.7"/>
+  <defs>
+    <linearGradient id="wGrad" x1="110" y1="140" x2="400" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A5F3FC"/>
+      <stop offset="35%" stop-color="#22D3EE"/>
+      <stop offset="70%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <path
+      d="M128 170 L184 330 L256 220 L328 330 L372 200"
+      stroke="url(#wGrad)"
+      stroke-width="48"
+    />
+    <path
+      d="M372 200 L408 148"
+      stroke="url(#wGrad)"
+      stroke-width="48"
+    />
+    <path
+      d="M378 118 L440 152 L400 200 Z"
+      fill="url(#wGrad)"
+    />
+  </g>
 </svg>

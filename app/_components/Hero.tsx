@@ -84,17 +84,10 @@ export function Hero() {
           animate="visible"
           variants={staggerContainer}
         >
-          <motion.div variants={fadeUp}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[var(--highlight)]/35 bg-[var(--surface-elevated)] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[var(--highlight)] sm:text-sm">
-              <span aria-hidden>🚀</span>
-              Coming soon — web &amp; app stores
-            </span>
-          </motion.div>
-
           <motion.h1
             id="hero-heading"
             variants={fadeUp}
-            className="font-display mt-6 max-w-xl text-4xl font-extrabold leading-[1.05] tracking-tight text-[var(--text-primary)] sm:text-5xl md:text-6xl lg:text-7xl"
+            className="font-display max-w-xl text-4xl font-extrabold leading-[1.05] tracking-tight text-[var(--text-primary)] sm:text-5xl md:text-6xl lg:text-7xl"
           >
             Web and mobile apps you can feel in every tap.
           </motion.h1>

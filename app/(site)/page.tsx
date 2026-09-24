@@ -10,13 +10,10 @@
  *
  * 3) Palette: --bg-base, --text-primary / --text-muted, --accent + glow (cyan), --highlight
  *    (amber) for eyebrows, badges, and accents; --surface surfaces; --border-subtle separation.
- *
- * 4) Signature: skewed process band + oversized 01–04 step numerals + SVG path draw on scroll.
  */
 
 import { AppShowcase } from "@/app/_components/AppShowcase";
 import { Hero } from "@/app/_components/Hero";
-import { HowItWorks } from "@/app/_components/HowItWorks";
 import { ValueProps } from "@/app/_components/ValueProps";
 import { Waitlist } from "@/app/_components/Waitlist";
 
@@ -26,7 +23,6 @@ export default function Home() {
       <Hero />
       <AppShowcase />
       <ValueProps />
-      <HowItWorks />
       <Waitlist />
     </>
   );

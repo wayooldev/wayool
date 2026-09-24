@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Github, Instagram, Linkedin, Mail, X } from "lucide-react";
 import Link from "next/link";
+import { WayoolBrandLogo } from "@/app/_components/brand/WayoolLogo";
 import { fadeUp, staggerContainer } from "@/app/_lib/motion";
 
 const FOOTER_COLS = [
@@ -49,36 +50,6 @@ const SOCIALS = [
   { href: "https://github.com", label: "GitHub", Icon: Github },
 ] as const;
 
-function LogoMark() {
-  return (
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-      className="shrink-0"
-    >
-      <path
-        d="M6 8L14 24L16 19L18 24L26 8"
-        stroke="currentColor"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="text-[var(--accent)]"
-      />
-      <path
-        d="M11 13h10"
-        stroke="currentColor"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        className="text-[var(--accent)]/70"
-      />
-    </svg>
-  );
-}
-
 export function Footer() {
   return (
     <footer
@@ -94,11 +65,11 @@ export function Footer() {
           className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between"
         >
           <motion.div variants={fadeUp} className="max-w-sm">
-            <div id="footer-brand" className="flex items-center gap-2">
-              <LogoMark />
-              <span className="font-display text-xl font-bold text-[var(--text-primary)]">
-                Wayool
-              </span>
+            <div id="footer-brand">
+              <WayoolBrandLogo
+                markSize={30}
+                textClassName="font-display text-xl font-bold tracking-tight"
+              />
             </div>
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
               Web and mobile products with real polish—fast, thoughtful, and
