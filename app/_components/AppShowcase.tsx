@@ -1,11 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import {
   BookMarked,
-  Download,
   ExternalLink,
+  Flame,
   PhoneCall,
   Pill,
   ShieldCheck,
@@ -17,10 +17,28 @@ import {
   Tv,
   Wallet,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { SectionWrapper } from "@/app/_components/ui/SectionWrapper";
 import { fadeUp, staggerContainer } from "@/app/_lib/motion";
+
+type TileAccent = {
+  /** Soft wash behind the card */
+  wash: string;
+  /** Icon / CTA / accents */
+  solid: string;
+  glow: string;
+  /** Icon well background */
+  well: string;
+  /** Border tint on hover */
+  border: string;
+};
+
+type TileMotion = {
+  enter: Variants;
+  hover: Record<string, number | string>;
+  iconHover: Record<string, number | string | number[]>;
+  iconTransition?: Record<string, number | string | boolean>;
+};
 
 type AppShowcaseItem = {
   name: string;
@@ -28,12 +46,31 @@ type AppShowcaseItem = {
   icon: LucideIcon;
   benefit: string;
   playSoonLabel?: string;
-  apkDownloadHref?: string;
   privacyHref?: string;
   visitHref?: string;
   version: string;
   status: string;
+  accent: TileAccent;
+  motion: TileMotion;
+  iconShape: "rounded-2xl" | "rounded-full" | "rounded-xl" | "rounded-[1.25rem]";
 };
+
+const enterFrom = (
+  dx: number,
+  dy: number,
+  rotate = 0,
+  delay = 0,
+): Variants => ({
+  hidden: { opacity: 0, x: dx, y: dy, rotate, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    rotate: 0,
+    scale: 1,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay },
+  },
+});
 
 const APPS: AppShowcaseItem[] = [
   {
@@ -45,6 +82,20 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://passward.wayool.com",
     version: "v1.0.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(120% 80% at 0% 0%, rgba(52,211,153,0.18), transparent 55%)",
+      solid: "#34d399",
+      glow: "rgba(52,211,153,0.45)",
+      well: "rgba(52,211,153,0.16)",
+      border: "rgba(52,211,153,0.45)",
+    },
+    motion: {
+      enter: enterFrom(-28, 24, -2),
+      hover: { y: -8, scale: 1.02 },
+      iconHover: { rotate: [0, -8, 8, 0], scale: 1.08 },
+      iconTransition: { duration: 0.55 },
+    },
+    iconShape: "rounded-2xl",
   },
   {
     name: "Luz Parroquial — Prayer",
@@ -52,11 +103,24 @@ const APPS: AppShowcaseItem[] = [
     icon: Sun,
     benefit:
       "Catholic prayer and devotion in Spanish—classic prayers, novenas, the rosary, and guided audio for when you want to pray without staring at the screen. Create an account to keep favorites and progress in sync across devices.",
-    apkDownloadHref: "/api/downloads/luz-parroquial",
     privacyHref: "/legal/privacy/luz-parroquial",
     visitHref: "https://luzparroquial-prayer.wayool.com",
     version: "v0.1.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(110% 90% at 100% 0%, rgba(251,191,36,0.2), transparent 58%)",
+      solid: "#fbbf24",
+      glow: "rgba(251,191,36,0.4)",
+      well: "rgba(251,191,36,0.16)",
+      border: "rgba(251,191,36,0.45)",
+    },
+    motion: {
+      enter: enterFrom(0, 36, 0, 0.04),
+      hover: { y: -6, scale: 1.025 },
+      iconHover: { rotate: 90, scale: 1.1 },
+      iconTransition: { type: "spring", stiffness: 220, damping: 14 },
+    },
+    iconShape: "rounded-full",
   },
   {
     name: "Live Countdown: for Fortnite Fans",
@@ -69,6 +133,20 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://livecountdown.wayool.com",
     version: "v1.0.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(100% 80% at 50% 0%, rgba(56,189,248,0.22), transparent 60%)",
+      solid: "#38bdf8",
+      glow: "rgba(56,189,248,0.5)",
+      well: "rgba(56,189,248,0.16)",
+      border: "rgba(56,189,248,0.5)",
+    },
+    motion: {
+      enter: enterFrom(28, 24, 2, 0.08),
+      hover: { y: -10, rotate: -0.6 },
+      iconHover: { rotate: 360 },
+      iconTransition: { duration: 0.7, ease: "easeInOut" },
+    },
+    iconShape: "rounded-xl",
   },
   {
     name: "Watchily",
@@ -79,6 +157,20 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://watchily-ho.vercel.app",
     version: "v1.0.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(120% 90% at 0% 100%, rgba(244,63,94,0.18), transparent 55%)",
+      solid: "#fb7185",
+      glow: "rgba(244,63,94,0.42)",
+      well: "rgba(244,63,94,0.15)",
+      border: "rgba(251,113,133,0.45)",
+    },
+    motion: {
+      enter: enterFrom(-20, 30, 0, 0.06),
+      hover: { y: -8, scale: 1.03 },
+      iconHover: { scale: [1, 1.15, 1], y: [0, -3, 0] },
+      iconTransition: { duration: 0.45 },
+    },
+    iconShape: "rounded-[1.25rem]",
   },
   {
     name: "MangaTrack",
@@ -89,6 +181,20 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://mangatrack.wayool.com",
     version: "v1.0.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(110% 85% at 100% 20%, rgba(45,212,191,0.2), transparent 55%)",
+      solid: "#2dd4bf",
+      glow: "rgba(45,212,191,0.45)",
+      well: "rgba(45,212,191,0.15)",
+      border: "rgba(45,212,191,0.45)",
+    },
+    motion: {
+      enter: enterFrom(0, 40, 0, 0.1),
+      hover: { y: -7, x: 2 },
+      iconHover: { rotate: -12, scale: 1.12 },
+      iconTransition: { type: "spring", stiffness: 300, damping: 16 },
+    },
+    iconShape: "rounded-2xl",
   },
   {
     name: "Health Erino",
@@ -99,6 +205,20 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://health-erino.vercel.app",
     version: "v1.0.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(100% 80% at 0% 50%, rgba(74,222,128,0.18), transparent 58%)",
+      solid: "#4ade80",
+      glow: "rgba(74,222,128,0.4)",
+      well: "rgba(74,222,128,0.15)",
+      border: "rgba(74,222,128,0.45)",
+    },
+    motion: {
+      enter: enterFrom(24, 28, 1.5, 0.12),
+      hover: { y: -9, scale: 1.02 },
+      iconHover: { rotate: [0, 15, -10, 0] },
+      iconTransition: { duration: 0.5 },
+    },
+    iconShape: "rounded-full",
   },
   {
     name: "CRT Líneas",
@@ -109,6 +229,20 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://crt-lineas.vercel.app",
     version: "v1.0.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(115% 90% at 80% 0%, rgba(96,165,250,0.2), transparent 55%)",
+      solid: "#60a5fa",
+      glow: "rgba(96,165,250,0.45)",
+      well: "rgba(96,165,250,0.15)",
+      border: "rgba(96,165,250,0.45)",
+    },
+    motion: {
+      enter: enterFrom(-30, 20, -1.5, 0.08),
+      hover: { y: -6, rotate: 0.5 },
+      iconHover: { x: [0, 2, -2, 0], scale: 1.08 },
+      iconTransition: { duration: 0.4 },
+    },
+    iconShape: "rounded-xl",
   },
   {
     name: "ArbPulse",
@@ -119,6 +253,20 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://arbpulse.wayool.com",
     version: "v1.0.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(110% 85% at 50% 100%, rgba(250,204,21,0.16), transparent 55%)",
+      solid: "#facc15",
+      glow: "rgba(250,204,21,0.4)",
+      well: "rgba(250,204,21,0.14)",
+      border: "rgba(250,204,21,0.45)",
+    },
+    motion: {
+      enter: enterFrom(0, 32, 0, 0.14),
+      hover: { y: -11, scale: 1.025 },
+      iconHover: { y: -4, scale: 1.12 },
+      iconTransition: { type: "spring", stiffness: 400, damping: 18 },
+    },
+    iconShape: "rounded-2xl",
   },
   {
     name: "te-kae",
@@ -129,6 +277,20 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://te-kae.wayool.com",
     version: "v1.0.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(120% 90% at 0% 0%, rgba(251,146,60,0.2), transparent 55%)",
+      solid: "#fb923c",
+      glow: "rgba(251,146,60,0.45)",
+      well: "rgba(251,146,60,0.15)",
+      border: "rgba(251,146,60,0.5)",
+    },
+    motion: {
+      enter: enterFrom(20, 36, 2, 0.1),
+      hover: { y: -12, rotate: -1 },
+      iconHover: { y: -6, rotate: -18, scale: 1.1 },
+      iconTransition: { type: "spring", stiffness: 280, damping: 14 },
+    },
+    iconShape: "rounded-[1.25rem]",
   },
   {
     name: "FinSos",
@@ -139,128 +301,203 @@ const APPS: AppShowcaseItem[] = [
     visitHref: "https://finsos.vercel.app",
     version: "v0.1.0",
     status: "Live",
+    accent: {
+      wash: "radial-gradient(110% 85% at 100% 80%, rgba(34,211,238,0.2), transparent 55%)",
+      solid: "#22d3ee",
+      glow: "rgba(34,211,238,0.45)",
+      well: "rgba(34,211,238,0.15)",
+      border: "rgba(34,211,238,0.5)",
+    },
+    motion: {
+      enter: enterFrom(-16, 28, 0, 0.16),
+      hover: { y: -8, scale: 1.02 },
+      iconHover: { rotate: [0, -6, 6, 0], scale: 1.08 },
+      iconTransition: { duration: 0.5 },
+    },
+    iconShape: "rounded-full",
+  },
+  {
+    name: "Dragon Territory",
+    category: "Kids games",
+    icon: Flame,
+    benefit:
+      "Arcade Othello for kids—Fire vs Ice dragons, flip eggs into dragons, and claim the arena with your clan.",
+    visitHref: "https://dragon-territory.wayool.com",
+    version: "v0.1.0",
+    status: "Live",
+    accent: {
+      wash: "radial-gradient(120% 90% at 0% 0%, rgba(251,146,60,0.22), transparent 55%), radial-gradient(100% 80% at 100% 100%, rgba(56,189,248,0.18), transparent 50%)",
+      solid: "#fb923c",
+      glow: "rgba(251,146,60,0.45)",
+      well: "rgba(251,146,60,0.16)",
+      border: "rgba(56,189,248,0.45)",
+    },
+    motion: {
+      enter: enterFrom(18, 30, 1.5, 0.18),
+      hover: { y: -10, scale: 1.025 },
+      iconHover: { rotate: [0, -10, 10, 0], scale: 1.1 },
+      iconTransition: { duration: 0.55 },
+    },
+    iconShape: "rounded-2xl",
   },
 ];
 
-function PwaBadge() {
+function PlaySoonBadge({
+  label = "Coming soon · Web & mobile",
+  color,
+}: {
+  label?: string;
+  color: string;
+}) {
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-md border border-[var(--accent)]/25 bg-[var(--accent)]/10 px-2 py-1 text-[11px] font-semibold text-[var(--accent)]"
-      title="Progressive Web App — install from your browser"
+      className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold"
+      style={{
+        color,
+        borderColor: `${color}55`,
+        backgroundColor: `${color}18`,
+      }}
     >
-      <Download className="size-3 shrink-0" aria-hidden />
-      PWA · Installable
-    </span>
-  );
-}
-
-function PlaySoonBadge({ label = "Coming soon · Web & mobile" }: { label?: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-3 py-1 text-xs font-semibold text-[var(--accent)]">
       <Smartphone className="size-3.5 shrink-0" aria-hidden />
       {label}
     </span>
   );
 }
 
-function GooglePlayDownloadButton({ href }: { href: string }) {
+function VisitSiteButton({
+  href,
+  name,
+  color,
+}: {
+  href: string;
+  name: string;
+  color: string;
+}) {
   return (
-    <a
-      href={href}
-      download="luz-parroquial.apk"
-      className="inline-flex min-h-11 shrink-0 items-center rounded-lg p-0.5 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:min-h-12 md:min-h-14"
-      aria-label="Download Luz Parroquial APK for Android"
-    >
-      <Image
-        src="/google-play-badge.png"
-        alt="Get it on Google Play"
-        width={646}
-        height={250}
-        sizes="(max-width: 639px) 132px, (max-width: 1023px) 150px, 168px"
-        className="h-11 w-auto sm:h-12 md:h-14"
-        priority={false}
-      />
-    </a>
-  );
-}
-
-function VisitSiteButton({ href, name }: { href: string; name: string }) {
-  return (
-    <a
+    <motion.a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-4 py-2 text-xs font-semibold text-[var(--accent)] transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent)]/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+      className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+      style={{
+        color,
+        borderColor: `${color}66`,
+        backgroundColor: `${color}14`,
+        outlineColor: color,
+      }}
+      whileHover={{ scale: 1.05, backgroundColor: `${color}28` }}
+      whileTap={{ scale: 0.97 }}
       aria-label={`Open ${name} website`}
     >
       Visit site
       <ExternalLink className="size-3.5 shrink-0" aria-hidden />
-    </a>
+    </motion.a>
   );
 }
 
-function AppCard({ app }: { app: AppShowcaseItem }) {
+function AppCard({ app, index }: { app: AppShowcaseItem; index: number }) {
   const Icon = app.icon;
+  const { accent, motion: tileMotion } = app;
+
   return (
-    <motion.article
-      className="glass-panel flex h-full flex-col rounded-2xl p-6 shadow-card transition-colors sm:p-7"
-      whileHover={{
-        scale: 1.02,
-        boxShadow:
-          "0 32px 96px -28px rgba(0,0,0,0.9), 0 0 48px -12px rgba(34,211,238,0.35)",
-      }}
-      transition={{ type: "spring", stiffness: 380, damping: 26 }}
-    >
-      <div className="flex items-start justify-between gap-3">
+    <motion.li variants={tileMotion.enter} className="m-0 min-w-0 list-none">
+      <motion.article
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-elevated)] p-6 shadow-card backdrop-blur-md sm:p-7"
+        whileHover={{
+          ...tileMotion.hover,
+          borderColor: accent.border,
+          boxShadow: `0 28px 80px -28px rgba(0,0,0,0.85), 0 0 40px -10px ${accent.glow}`,
+        }}
+        transition={{ type: "spring", stiffness: 360, damping: 24 }}
+      >
         <div
-          className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--accent)]/15 text-[var(--accent)]"
+          className="pointer-events-none absolute inset-0 opacity-90 transition-opacity duration-500 group-hover:opacity-100"
+          style={{ background: accent.wash }}
           aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -right-8 -top-8 size-28 rounded-full opacity-40 blur-2xl transition-transform duration-500 group-hover:scale-125"
+          style={{ background: accent.solid }}
+          aria-hidden
+        />
+
+        <div className="relative flex items-start justify-between gap-3">
+          <motion.div
+            className={`flex size-12 shrink-0 items-center justify-center ${app.iconShape}`}
+            style={{ backgroundColor: accent.well, color: accent.solid }}
+            whileHover={tileMotion.iconHover}
+            transition={tileMotion.iconTransition}
+            aria-hidden
+          >
+            <Icon className="size-6" strokeWidth={1.75} />
+          </motion.div>
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            {app.visitHref ? (
+              <VisitSiteButton
+                href={app.visitHref}
+                name={app.name}
+                color={accent.solid}
+              />
+            ) : null}
+            {app.playSoonLabel ? (
+              <PlaySoonBadge label={app.playSoonLabel} color={accent.solid} />
+            ) : null}
+          </div>
+        </div>
+
+        <p
+          className="relative mt-4 text-xs font-semibold uppercase tracking-wider"
+          style={{ color: accent.solid }}
         >
-          <Icon className="size-6" strokeWidth={1.75} />
-        </div>
-        <div className="flex flex-wrap items-center justify-end gap-2">
-          {app.visitHref ? (
-            <VisitSiteButton href={app.visitHref} name={app.name} />
-          ) : null}
-          {app.apkDownloadHref ? (
-            <GooglePlayDownloadButton href={app.apkDownloadHref} />
-          ) : app.playSoonLabel ? (
-            <PlaySoonBadge label={app.playSoonLabel} />
-          ) : null}
-        </div>
-      </div>
+          {app.category}
+        </p>
+        <h3 className="font-display relative mt-1 text-2xl font-bold text-[var(--text-primary)] sm:text-3xl">
+          {app.name}
+        </h3>
+        <p className="relative mt-4 flex-1 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
+          {app.benefit}
+        </p>
 
-      <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-        {app.category}
-      </p>
-      <h3 className="font-display mt-1 text-2xl font-bold text-[var(--text-primary)] sm:text-3xl">
-        {app.name}
-      </h3>
-      <p className="mt-4 flex-1 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
-        {app.benefit}
-      </p>
-
-      <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-[var(--border-subtle)] pt-5 text-xs text-[var(--text-muted)]">
-        <span className="rounded-md bg-[var(--surface)] px-2 py-1 font-mono text-[11px] text-[var(--highlight-muted)]">
-          {app.version}
-        </span>
-        <span className="text-[var(--text-muted)]">·</span>
-        <span>{app.status}</span>
-        <span className="text-[var(--text-muted)]">·</span>
-        <PwaBadge />
-        {app.privacyHref ? (
-          <>
-            <span className="text-[var(--text-muted)]">·</span>
-            <Link
-              href={app.privacyHref}
-              className="font-semibold text-[var(--accent)] transition-colors hover:text-[var(--highlight)]"
-            >
-              Privacy policy
-            </Link>
-          </>
-        ) : null}
-      </div>
-    </motion.article>
+        <div className="relative mt-6 flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-[var(--border-subtle)] pt-5 text-xs text-[var(--text-muted)]">
+          <span
+            className="rounded-md px-2 py-1 font-mono text-[11px]"
+            style={{
+              backgroundColor: accent.well,
+              color: accent.solid,
+            }}
+          >
+            {app.version}
+          </span>
+          <span aria-hidden>·</span>
+          <span
+            className="inline-flex items-center gap-1.5 font-semibold"
+            style={{ color: accent.solid }}
+          >
+            <span
+              className="size-1.5 animate-pulse rounded-full"
+              style={{
+                backgroundColor: accent.solid,
+                animationDelay: `${index * 120}ms`,
+              }}
+              aria-hidden
+            />
+            {app.status}
+          </span>
+          {app.privacyHref ? (
+            <>
+              <span aria-hidden>·</span>
+              <Link
+                href={app.privacyHref}
+                className="font-semibold transition-opacity hover:opacity-80"
+                style={{ color: accent.solid }}
+              >
+                Privacy policy
+              </Link>
+            </>
+          ) : null}
+        </div>
+      </motion.article>
+    </motion.li>
   );
 }
 
@@ -288,8 +525,9 @@ export function AppShowcase() {
             Products built for daily rituals.
           </motion.h2>
           <motion.p variants={fadeUp} className="mt-4 text-[var(--text-muted)]">
-            Each one is built for responsive web and mobile: smooth flows, clear
-            trust signals, and time back for the people who use them.
+            Each one is built for responsive web and mobile—and as installable
+            PWAs you can add to your home screen. Smooth flows, clear trust
+            signals, and time back for the people who use them.
           </motion.p>
         </motion.div>
 
@@ -298,13 +536,16 @@ export function AppShowcase() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          variants={staggerContainer}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: { staggerChildren: 0.07, delayChildren: 0.04 },
+            },
+          }}
           aria-label="Wayool apps"
         >
-          {APPS.map((app) => (
-            <motion.li key={app.name} variants={fadeUp} className="m-0 min-w-0">
-              <AppCard app={app} />
-            </motion.li>
+          {APPS.map((app, index) => (
+            <AppCard key={app.name} app={app} index={index} />
           ))}
         </motion.ul>
       </div>

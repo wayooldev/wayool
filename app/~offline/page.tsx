@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { WayoolLogoMark } from "@/app/_components/brand/WayoolLogo";
 
 export default function OfflinePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+      <WayoolLogoMark size={72} className="mb-6" />
       <p className="mb-2 text-sm font-medium uppercase tracking-widest text-[var(--accent)]">
         Offline
       </p>
